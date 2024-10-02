@@ -1,0 +1,12 @@
+# python=3.10.14
+pykan==0.2.6
+matplotlib==3.6.2
+numpy==1.24.0
+scikit_learn==1.5.1
+setuptools==65.5.0
+sympy==1.11.1
+tqdm==4.66.2
+pandas==2.2.2
+openpyxl==3.1.5
+faiss-cpu==1.8.0.post1
+seaborn==0.13.2
