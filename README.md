@@ -1,6 +1,6 @@
 # KAE: Kolmogorov-Arnold Auto-Encoder
 
-The source code for the arXiv paper titled **"KAE: Kolmogorov-Arnold Auto-Encoder for Representation Learning"** is available. This code, created by [Ruilizhen Hu](https://github.com/HuRuilizhen), [Fangchen Yu](https://github.com/SciYu), and [Yidong Lin](https://github.com/Asuna-L), supports experiments with Auto-Encoders on various tasks, utilizing different blocks and architectures.
+The source code for the arXiv paper titled [**"KAE: Kolmogorov-Arnold Auto-Encoder for Representation Learning"**](https://arxiv.org/pdf/2501.00420) is available. This code, created by [Ruilizhen Hu](https://github.com/HuRuilizhen), [Fangchen Yu](https://github.com/SciYu), and [Yidong Lin](https://github.com/Asuna-L), supports experiments with Auto-Encoders on various tasks, utilizing different blocks and architectures.
 
 ## Code Structure
 
@@ -111,10 +111,17 @@ Training can be done in the following way:
 
 ```python
 import ExpToolKit
+import yaml
 
 config_path = "path_to_config.yaml"
-train_setting = ExpToolKit.create_train_setting(config_path)
-model, train_loss, test_loss = ExpToolKit.train_and_test(*train_setting, is_print=False)
+
+with open(config_path) as fp:
+    config = yaml.safe_load(fp)
+
+train_setting = ExpToolKit.create_train_setting(config)
+
+model, train_loss_epoch, train_loss_batch, epoch_time, test_loss_epoch = \
+    ExpToolKit.train_and_test(**train_setting, is_print=False)
 ```
 
 ### Evaluate Model on Various Tasks
@@ -158,12 +165,12 @@ If you find this code useful for your research, please use the following BibTeX 
 ```
 @article{yu2024kae,
   title={KAE: Kolmogorov-Arnold Auto-Encoder for Representation Learning},
-  author={Fangchen Yu, Ruilizhen Hu, Yidong Lin, Yuqi Ma, Zhenghao Huang, Wenye Li},
-  journal={arXiv},
+  author={Yu, Fangchen and Hu, Ruilizhen and Lin, Yidong and Ma, Yuqi and Huang, Zhenghao and Li, Wenye},
+  journal={arXiv preprint arXiv:2501.00420},
   year={2024}
 }
 ```
 
 ---
 
-> *Last Update: 2024-12-31*
+> *Last Update: 2025-01-08*
