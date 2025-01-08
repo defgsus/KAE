@@ -111,17 +111,14 @@ Training can be done in the following way:
 
 ```python
 import ExpToolKit
-import yaml
 
 config_path = "path_to_config.yaml"
-
-with open(config_path) as fp:
-    config = yaml.safe_load(fp)
-
+config = ExpToolKit.load_config(config_path)
 train_setting = ExpToolKit.create_train_setting(config)
 
-model, train_loss_epoch, train_loss_batch, epoch_time, test_loss_epoch = \
+model, train_loss_epoch, train_loss_batch, epoch_time, test_loss_epoch = (
     ExpToolKit.train_and_test(**train_setting, is_print=False)
+)
 ```
 
 ### Evaluate Model on Various Tasks
