@@ -303,7 +303,7 @@ def get_examples(
     indexes: List[int],
     noise_type: str,
     kwargs,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Get examples from the given dataloader with the specified model and noise type.
 

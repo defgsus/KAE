@@ -1,10 +1,12 @@
+from typing import Optional
+
 from ExpToolKit.models import BaseAE
 import torch
 import numpy as np
 
 
 def dimension_reduction(
-    model: BaseAE | None = None,
+    model: Optional[BaseAE] = None,
     x: torch.Tensor = None,
 ) -> np.ndarray:
     """

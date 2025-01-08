@@ -1,3 +1,5 @@
+from typing import Tuple, List
+
 from copy import deepcopy
 import math
 import random
@@ -136,8 +138,8 @@ class Denoiser:
         return self.model
 
     def get_example(
-        self, dataloader: DataLoader, indexes: list[int], **kwargs
-    ) -> tuple[np.ndarray, np.ndarray]:
+        self, dataloader: DataLoader, indexes: List[int], **kwargs
+    ) -> Tuple[np.ndarray, np.ndarray]:
         """
         Get the original and denoised examples from the given dataloader at the given indexes.
 

@@ -1,3 +1,5 @@
+from typing import Optional
+
 from torch.utils.data import DataLoader
 from sklearn.neighbors import KNeighborsClassifier as kNN_Classifier
 from sklearn.neural_network import MLPClassifier as MLP_Classifier
@@ -13,7 +15,7 @@ from .utils import dimension_reduction
 
 class Classifier(object):
     def __init__(
-        self, classifier_type: str, model: BaseAE | None = None, **kwargs
+        self, classifier_type: str, model: Optional[BaseAE] = None, **kwargs
     ) -> None:
         """
         Initialize a specific type of classifier based on the classifier_type argument and additional arguments.

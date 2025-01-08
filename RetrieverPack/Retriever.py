@@ -1,3 +1,5 @@
+from typing import Optional
+
 import faiss
 import numpy as np
 from typing import Tuple
@@ -11,7 +13,7 @@ from .utils import get_x
 
 class Retriever:
     def __init__(
-        self, retriever_type: str, model: BaseAE | None = None, **kwargs
+        self, retriever_type: str, model: Optional[BaseAE] = None, **kwargs
     ) -> None:
         """
         __init__ function of Retriever class.

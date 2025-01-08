@@ -1,3 +1,5 @@
+from typing import Optional, Union
+
 import torch
 from torch.utils.data import DataLoader
 from typing import Tuple
@@ -7,8 +9,8 @@ from ExpToolKit.models import BaseAE
 
 
 def dimension_reduction(
-    model: BaseAE | None = None,
-    x: np.ndarray | torch.Tensor = None,
+    model: Optional[BaseAE] = None,
+    x: Union[None, np.ndarray, torch.Tensor] = None,
 ) -> np.ndarray:
     """
     Reduce the dimension of the given data.
@@ -46,7 +48,7 @@ def dimension_reduction(
 
 
 def get_x(
-    model: BaseAE | None, dataloader: DataLoader, label_num: int = 100
+    model: Optional[BaseAE], dataloader: DataLoader, label_num: int = 100
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
     Get the data and latent data from the given dataloader.
