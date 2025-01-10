@@ -14,7 +14,7 @@ class KAELayer(nn.Module):
             self.bias = nn.Parameter(torch.zeros(1, out_dim))
 
     def extra_repr(self):
-        return f"order={self.order}"
+        return f"input_dim={self.input_dim}, out_dim={self.out_dim}, order={self.order - 1}, addbias={self.addbias}"
 
     def forward(self, x):
         shape = x.shape

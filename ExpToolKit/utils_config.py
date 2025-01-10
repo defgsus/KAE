@@ -60,6 +60,8 @@ def create_model(config: dict) -> models.BaseAE:
     else:
         raise NotImplementedError("latent_dim is not specified in config")
 
+    activation = config["MODEL"].get("activation")
+
     kwargs = {}
     if "layer_type" in config["MODEL"]:
         layer_type = config["MODEL"]["layer_type"]
@@ -82,6 +84,7 @@ def create_model(config: dict) -> models.BaseAE:
             hidden_dims=hidden_dims,
             latent_dim=latent_dim,
             layer_type=layer_type,
+            activation=activation,
             **kwargs
         )
     else:

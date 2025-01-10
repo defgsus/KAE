@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Union
 import torch
 import torch.nn as nn
 import numpy as np
@@ -160,6 +160,7 @@ class StandardAE(BaseAE):
         hidden_dims: list,
         latent_dim: int,
         layer_type: str = DENSE_LAYER_CONST.LINEAR_LAYER,
+        activation: Union[None, str, Tuple[str, str]] = None,
         **kwargs: dict
     ):
         """
@@ -181,24 +182,31 @@ class StandardAE(BaseAE):
         """
         super(StandardAE, self).__init__()
 
+        if activation is None:
+            act, final_act = "relu", "sigmoid"
+        elif isinstance(activation, str):
+            act, final_act = activation, activation
+        else:
+            act, final_act = activation
+
         encoder_layers = []
         if len(hidden_dims) == 0:
             encoder_layers.append(
                 DenseLayer(input_dim, latent_dim, layer_type, **kwargs)
             )
-            encoder_layers.append(nn.ReLU(True))
+            encoder_layers.append(get_activation(act))
         else:
             temp_input_dim = input_dim
             for h_dim in hidden_dims:
                 encoder_layers.append(
                     DenseLayer(temp_input_dim, h_dim, layer_type, **kwargs)
                 )
-                encoder_layers.append(nn.ReLU(True))
+                encoder_layers.append(get_activation(act))
                 temp_input_dim = h_dim
             encoder_layers.append(
                 DenseLayer(temp_input_dim, latent_dim, layer_type, **kwargs)
             )
-            encoder_layers.append(nn.ReLU(True))
+            encoder_layers.append(get_activation(act))
         self.encoder = nn.Sequential(*encoder_layers)
 
         decoder_layers = []
@@ -206,19 +214,19 @@ class StandardAE(BaseAE):
             decoder_layers.append(
                 DenseLayer(latent_dim, input_dim, layer_type, **kwargs)
             )
-            decoder_layers.append(nn.Sigmoid())
+            decoder_layers.append(get_activation(final_act))
         else:
             temp_input_dim = latent_dim
             for h_dim in reversed(hidden_dims):
                 decoder_layers.append(
                     DenseLayer(temp_input_dim, h_dim, layer_type, **kwargs)
                 )
-                decoder_layers.append(nn.ReLU(True))
+                decoder_layers.append(get_activation(act))
                 temp_input_dim = h_dim
             decoder_layers.append(
                 DenseLayer(temp_input_dim, input_dim, layer_type, **kwargs)
             )
-            decoder_layers.append(nn.Sigmoid())
+            decoder_layers.append(get_activation(final_act))
         self.decoder = nn.Sequential(*decoder_layers)
 
         self.latent_dim = latent_dim
@@ -250,3 +258,19 @@ class StandardAE(BaseAE):
         z = self.encode(torch.from_numpy(x).float())
         z = z.detach().numpy()
         return z
+
+
+def get_activation(activation: str, inplace: bool = True) -> nn.Module:
+    activation = activation.lower()
+
+    for name in dir(nn):
+        if name.lower() == activation:
+            klass = getattr(nn, name)
+            if issubclass(klass, nn.Module):
+                try:
+                    return klass(inplace=inplace)
+                except TypeError:
+                    return klass()
+
+    raise ValueError(f"Unknown activation '{activation}'")
+

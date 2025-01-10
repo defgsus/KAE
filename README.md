@@ -1,3 +1,5 @@
+Just a little fork. Check [defgsus/README.md](defgsus/README.md) for details.
+
 # KAE: Kolmogorov-Arnold Auto-Encoder
 
 The source code for the arXiv paper titled [**"KAE: Kolmogorov-Arnold Auto-Encoder for Representation Learning"**](https://arxiv.org/pdf/2501.00420) is available. This code, created by [Ruilizhen Hu](https://github.com/HuRuilizhen), [Fangchen Yu](https://github.com/SciYu), and [Yidong Lin](https://github.com/Asuna-L), supports experiments with Auto-Encoders on various tasks, utilizing different blocks and architectures.
