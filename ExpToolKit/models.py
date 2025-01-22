@@ -1,4 +1,4 @@
-from typing import Tuple, Union
+from typing import Tuple, Union, Optional
 import torch
 import torch.nn as nn
 import numpy as np
@@ -194,19 +194,22 @@ class StandardAE(BaseAE):
             encoder_layers.append(
                 DenseLayer(input_dim, latent_dim, layer_type, **kwargs)
             )
-            encoder_layers.append(get_activation(act))
+            if (act_module := get_activation(act)) is not None:
+                encoder_layers.append(act_module)
         else:
             temp_input_dim = input_dim
             for h_dim in hidden_dims:
                 encoder_layers.append(
                     DenseLayer(temp_input_dim, h_dim, layer_type, **kwargs)
                 )
-                encoder_layers.append(get_activation(act))
+                if (act_module := get_activation(act)) is not None:
+                    encoder_layers.append(act_module)
                 temp_input_dim = h_dim
             encoder_layers.append(
                 DenseLayer(temp_input_dim, latent_dim, layer_type, **kwargs)
             )
-            encoder_layers.append(get_activation(act))
+            if (act_module := get_activation(act)) is not None:
+                encoder_layers.append(act_module)
         self.encoder = nn.Sequential(*encoder_layers)
 
         decoder_layers = []
@@ -214,19 +217,22 @@ class StandardAE(BaseAE):
             decoder_layers.append(
                 DenseLayer(latent_dim, input_dim, layer_type, **kwargs)
             )
-            decoder_layers.append(get_activation(final_act))
+            if (act_module := get_activation(final_act)) is not None:
+                decoder_layers.append(act_module)
         else:
             temp_input_dim = latent_dim
             for h_dim in reversed(hidden_dims):
                 decoder_layers.append(
                     DenseLayer(temp_input_dim, h_dim, layer_type, **kwargs)
                 )
-                decoder_layers.append(get_activation(act))
+                if (act_module := get_activation(act)) is not None:
+                    decoder_layers.append(act_module)
                 temp_input_dim = h_dim
             decoder_layers.append(
                 DenseLayer(temp_input_dim, input_dim, layer_type, **kwargs)
             )
-            decoder_layers.append(get_activation(final_act))
+            if (act_module := get_activation(final_act)) is not None:
+                decoder_layers.append(act_module)
         self.decoder = nn.Sequential(*decoder_layers)
 
         self.latent_dim = latent_dim
@@ -260,8 +266,11 @@ class StandardAE(BaseAE):
         return z
 
 
-def get_activation(activation: str, inplace: bool = True) -> nn.Module:
+def get_activation(activation: str, inplace: bool = True) -> Optional[nn.Module]:
     activation = activation.lower()
+
+    if activation == "none":
+        return
 
     for name in dir(nn):
         if name.lower() == activation:

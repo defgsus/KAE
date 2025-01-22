@@ -17,6 +17,11 @@ EXPERIMENTS = [
     ),
     Experiment(
         model="MLP",
+        train_config={"epochs": DEFAULT_EPOCHS, "optim_type": "ADAMW", "lr": 0.0003, "batch_size": 64},
+        model_config={"hidden_dims": [], "activation": ["none", "relu"]},
+    ),
+    Experiment(
+        model="MLP",
         train_config={"epochs": DEFAULT_EPOCHS},
         model_config={"hidden_dims": [], "activation": "relu6"},
     ),
@@ -79,6 +84,16 @@ EXPERIMENTS = [
         model="KAE",
         train_config={"epochs": DEFAULT_EPOCHS},
         model_config={"order": 3, "activation": ["relu6", "sigmoid"]},
+    ),
+    Experiment(
+        model="KAE",
+        train_config={"epochs": DEFAULT_EPOCHS},
+        model_config={"order": 3, "activation": ["none", "sigmoid"]},
+    ),
+    Experiment(
+        model="KAE",
+        train_config={"epochs": DEFAULT_EPOCHS, "optim_type": "ADAMW", "lr": 0.0003, "batch_size": 64},
+        model_config={"order": 3, "activation": ["none", "sigmoid"]},
     ),
     Experiment(
         model="KAE",
